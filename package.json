@@ -17,8 +17,9 @@
   },
   "homepage": "https://github.com/falkoner/frontend-nanodegree-mobile-portfolio#readme",
   "devDependencies": {
-    "gulp-exit": "0.0.2",
     "browser-sync": "^2.8.2",
+    "gulp-exit": "0.0.2",
+    "gulp-task-listing": "^1.0.1",
     "ngrok": "0.1.99",
     "psi": "^1.0.6",
     "run-sequence": "^1.1.4"
