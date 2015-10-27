@@ -8,21 +8,29 @@ var imageop = require('gulp-image-optimization');
 var minifyCss = require('gulp-minify-css');
 var minifyhtml = require('gulp-minify-html');
 var uglify = require('gulp-uglify');
-var concatify = require('gulp-concat');
+var del = require('del');
 
 var site = '';
 var portVal = 3020;
 
-gulp.task('psi', ['_scripts', '_styles','_images', '_content', 'psi-seq'], function() {
+gulp.task('psi', ['build', 'psi-seq'], function() {
   console.log('Woohoo! Check out your page speed scores!');
   process.exit();
 });
+
+gulp.task('serve', ['clean','build', '_browse']);
+
+gulp.task('build', ['_scripts', '_styles','_images', '_content']);
 
 gulp.task('help', taskListing.withFilters(null, 'default'));
 
 gulp.task('default', ['help']);
 
-gulp.task('serve', ['_scripts', '_styles','_images', '_content', '_browse']);
+gulp.task('clean', function(){
+  del(['js/*', 'img/*', 'css/*', '*.html', '!source/**']).then(function (paths) {
+      console.log('Deleted files/folders:\n', paths.join('\n'));
+  });
+});
 
 gulp.task('_browse', function(){
     browserSync({
@@ -38,7 +46,6 @@ gulp.task('_browse', function(){
     gulp.watch('source/*.html', ['content-watch']);
     gulp.watch('source/img/*', ['image-watch']);
 });
-
 
 gulp.task('_styles', function(){
   return gulp.src('source/css/*.css')
@@ -57,7 +64,6 @@ gulp.task('_images', function() {
 gulp.task('_scripts', function() {
     return gulp.src('source/js/*.js')
         .pipe(uglify())
-        .pipe(concatify('app.js'))
         .pipe(gulp.dest('js'));
 });
 
