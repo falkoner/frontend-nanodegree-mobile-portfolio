@@ -9,16 +9,27 @@ var minifyCss = require('gulp-minify-css');
 var minifyhtml = require('gulp-minify-html');
 var uglify = require('gulp-uglify');
 var del = require('del');
+var inject = require('gulp-inject');
 
 var site = '';
 var portVal = 3020;
 
-gulp.task('psi', ['build', 'psi-seq'], function() {
-  console.log('Woohoo! Check out your page speed scores!');
-  process.exit();
+gulp.task('psi', function(cb) {
+  sequence(
+   'build',
+   'psi-seq',
+   cb
+  );
 });
 
-gulp.task('serve', ['clean','build', '_browse']);
+gulp.task('serve', function(cb) {
+  sequence(
+    'clean',
+    'build',
+    '_browse',
+    cb
+  );
+});
 
 gulp.task('build', ['_scripts', '_styles','_images', '_content']);
 
@@ -69,6 +80,13 @@ gulp.task('_scripts', function() {
 
 gulp.task('_content', function() {
     return gulp.src('source/*.html')
+        .pipe(inject(gulp.src('source/css/style.css').pipe(minifyCss({compatibility: 'ie8'})), {
+          starttag: '/* inject:head:css */',
+          endtag: '/* endinject */',
+          transform: function (filePath, file) {
+            return file.contents.toString('utf8');
+          }
+        }))
         .pipe(minifyhtml({
             empty: true,
             quotes: true
