@@ -19,6 +19,7 @@
   "devDependencies": {
     "browser-sync": "^2.8.2",
     "gulp-exit": "0.0.2",
+    "gulp-gh-pages": "^0.5.4",
     "gulp-image-optimization": "^0.1.3",
     "gulp-inject": "^3.0.0",
     "gulp-minify-css": "^1.2.1",
