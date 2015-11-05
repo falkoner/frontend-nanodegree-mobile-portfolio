@@ -23,8 +23,9 @@ See initial assignment below.
         * inlined main css file into the head of html files
         * switched to Web Font Loader
 * __Pizza.html__
-    * Refactored changePizzaSizes method to prevent layout recalculations
-    * Prevent jank on scroll due to 'Forced synchronous layout' in updatePositions(): extract layout operation out of the loop
+    * append all pizzas at once using createDocumentFragment() in order to make only one page reflow instead of 100
+    * refactored changePizzaSizes method to prevent layout recalculations
+    * prevent jank on scroll due to 'Forced synchronous layout' in updatePositions(): extract layout operation out of the loop
     * prevent another 'Forced synchronous layout' in gettng the same reference pizzasDiv in the loop while adding random pizzas
     * reduce number of moving pizza elements created to about enough to fill the viewport
     * promote moving pizzas to their own layer

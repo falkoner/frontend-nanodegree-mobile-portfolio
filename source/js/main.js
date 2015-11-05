@@ -426,6 +426,7 @@ var resizePizzas = function(size) {
   // - removed redundant method determineDx()
   // - extracted DOM parsing call to querySelectorAll out of the loop
   // - no need conversion to px from %
+  // - find random pizza container fast using getElementsByClass() instead of querySelectorAll()
   function changePizzaSizes(size) {
     switch(size) {
       case "1":
@@ -442,8 +443,8 @@ var resizePizzas = function(size) {
     }
 
     var randomPizzas = document.getElementsByClass(".randomPizzaContainer");
-
-    for (var i = 0; i < randomPizzas.length; i++) {
+    var numOfRandomPizzas = randomPizzas.length;
+    for (var i = 0; i < numOfRandomPizzas; i++) {
       randomPizzas[i].style.width = newWidth + "%";
     }
   }
@@ -462,10 +463,14 @@ window.performance.mark("mark_start_generating"); // collect timing data
 // This for-loop actually creates and appends all of the pizzas when the page loads
 // Optimizations:
 // * no need to waste time on gettng the same reference pizzasDiv in the loop
+// * append all pizzas at once making only one page reflow instead of 100
+var pizzasElements = document.createDocumentFragment();
 var pizzasDiv = document.getElementById("randomPizzas");
 for (var i = 2; i < 100; i++) {
-  pizzasDiv.appendChild(pizzaElementGenerator(i));
+  pizzasElements.appendChild(pizzaElementGenerator(i));
 }
+
+pizzasDiv.appendChild(pizzasElements);
 
 // User Timing API again. These measurements tell you how long it took to generate the initial pizzas
 window.performance.mark("mark_end_generating");
