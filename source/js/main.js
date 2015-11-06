@@ -500,11 +500,10 @@ function updatePositions() {
   frame++;
   window.performance.mark("mark_start_frame");
 
-  var items = document.querySelectorAll('.mover');
-
-  // scrollTop is Layout triggering function and should not be invoked in the loop
   // Optimizations:
-  // * to avoid jank on scroll due to 'Forced synchronous layout'
+  // * scrollTop is Layout triggering function and should not be invoked in the loop
+  // * getElementsByClass() is faster than querySelectorAll()
+  var items = document.getElementsByClass('.mover');
   var scrollPosition = document.body.scrollTop;
 
   for (var i = 0; i < items.length; i++) {
